@@ -9,6 +9,32 @@
 
 <br />
 
+## 🗺️ 演进路线图
+
+```mermaid
+timeline
+    title Ollama Task Engine 演进路线
+    section v0.1 原型建立 (当前状态)
+        物理沙盒 : 路径安全校验与文件读写
+        执行引擎 : Shell 命令执行与防超时机制
+        信息触角 : 网页纯文本提纯与 GitHub API 接入
+        状态管理 : 三态 Todo 系统与 Token 动态压缩策略
+    section v0.2 体验升维 (进行中)
+        视觉反馈 : 终端彩色高亮与大模型流式输出
+        Web 控制台 : 基础可视化面板交互
+        长程记忆 : 对话状态持久化与无缝加载
+    section v0.3 架构裂变 (计划中)
+        任务分发 : Sub-Agent 基础架构落地
+        版本控制 : Git 深度集成与代码回溯
+        专家节点 : 代码审查(Review)专用 Agent
+    section v1.0 终极形态 (🎯)
+        蜂群协同 : 多 Agent 并发任务处理与结果汇总
+        深度感知 : 引入 AST(抽象语法树) 级代码结构理解
+        正式加冕 : 核心架构稳定，项目正式更名发布
+```
+
+<br />
+
 ## 💡 设计哲学
 
 - **Local First (本地优先)**: 你的代码是你的核心资产。所有推理和文件操作均在本地完成，切断对外部商业 API 的依赖。
@@ -270,30 +296,6 @@ codeagent/
 3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 打开 Pull Request
-
-## 🗺️ 演进路线图
-
-```mermaid
-timeline
-    title Ollama Task Engine 演进路线
-    section v0.1 原型建立 (当前状态)
-        物理沙盒 : 路径安全校验与文件读写
-        执行引擎 : Shell 命令执行与防超时机制
-        信息触角 : 网页纯文本提纯与 GitHub API 接入
-        状态管理 : 三态 Todo 系统与 Token 动态压缩策略
-    section v0.2 体验升维 (进行中)
-        视觉反馈 : 终端彩色高亮与大模型流式输出
-        Web 控制台 : 基础可视化面板交互
-        长程记忆 : 对话状态持久化与无缝加载
-    section v0.3 架构裂变 (计划中)
-        任务分发 : Sub-Agent 基础架构落地
-        版本控制 : Git 深度集成与代码回溯
-        专家节点 : 代码审查(Review)专用 Agent
-    section v1.0 终极形态 (🎯)
-        蜂群协同 : 多 Agent 并发任务处理与结果汇总
-        深度感知 : 引入 AST(抽象语法树) 级代码结构理解
-        正式加冕 : 核心架构稳定，项目正式更名发布
-```
 
 ## 📝 开发里程碑
 
