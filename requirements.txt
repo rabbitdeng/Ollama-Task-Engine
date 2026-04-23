@@ -1,0 +1,10 @@
+# Code Agent - Python Dependencies
+# =====================================
+# Python 版本要求: Python 3.8+
+# 安装命令: pip install -r requirements.txt
+
+# HTTP 请求库 - 用于 Ollama API、GitHub API、网页抓取
+requests>=2.28.0,<3.0.0
+
+# HTML 解析库 - 用于网页内容提取
+beautifulsoup4>=4.11.0,<5.0.0

@@ -1,168 +1,187 @@
-# VTuber Coding Agent
+# Code Agent - 代码助手
 
-一个支持VTuber角色扮演的AI编程助手，使用Ollama构建，可以通过工具与文件系统交互并执行命令，同时保持在安全的沙箱环境中。
+基于 Ollama 的本地代码助手工具，支持代码文件管理、Shell 命令执行、GitHub 项目搜索、网页内容抓取和待办事项管理。
 
-## ✨ 核心特性
+## ✨ 功能特性
 
-- **VTuber角色扮演**：支持永雏塔菲（Taffy）等虚拟主播角色
-- **工具调用**：支持 `bash`、`read_file` 和 `write_file` 等工具
-- **多轮工具使用**：模型可以顺序调用多个工具完成复杂任务
-- **安全沙箱**：限制在工作目录内操作，防止访问系统文件
-- **角色化交互**：以VTuber的性格和语气与用户互动
-- **实时执行**：工具执行结果即时可见
+### 📁 文件管理
+- **读取文件** - 安全读取本地文件内容
+- **写入文件** - 创建或覆盖文件，自动创建父目录
+- **路径安全** - 防止目录遍历攻击，仅限工作目录内操作
 
-## 🎭 可选角色
+### 🖥️ Shell 命令执行
+- 执行任意 Shell 命令
+- 显示执行状态和完整输出
+- 支持超时保护（5 分钟）
 
-### 永雏塔菲（Ace Taffy）
+### 🔍 GitHub 集成
+- **项目搜索** - 通过 GitHub API 按关键词和编程语言搜索热门项目
+- **仓库详情** - 获取指定仓库的完整信息和 README 内容
+- 显示 Stars、Forks、编程语言等信息
 
-- **身份**：来自1885年的个人势虚拟偶像，侦探发明家
-- **特点**：活泼可爱，喜欢在句尾加"喵"作为语气词
-- **背景**：乘坐自己发明的时光机来到现代，被电子游戏吸引
-- **口头禅**："taffy能嘤嘤嘤也能冷冰冰喵！"、"关注永雏塔菲喵，关注永雏塔菲谢谢喵！"
+### 🌐 网页内容抓取
+- 自动提取网页纯文本内容
+- 移除脚本、样式、导航等无关元素
+- 内容过长自动截断
 
-## 🛠️ 可用工具
+### ✅ 待办事项管理
+- 三种状态：待完成 ⬜、进行中 🔄、已完成 ✅
+- 最多支持 5 个任务
+- 限制同时只有 1 个进行中的任务
+- 每次交互自动显示当前任务列表
 
-- **`bash`**：执行shell命令（限制在工作目录）
-- **`read_file`**：读取文件内容（仅在工作目录内）
-- **`write_file`**：写入文件内容（仅在工作目录内）
+### 💾 智能上下文管理
+- **轻量级压缩** - 旧的工具调用结果替换为占位符
+- **自动摘要** - token 超过阈值时自动压缩对话
+- **对话持久化** - 完整对话历史保存到 `transcripts/` 目录
+- **历史限制** - 最多保留最近 16 条消息
 
-## 📋 环境要求
+## 🚀 快速开始
 
-- Python 3.9+
-- Ollama（支持工具调用的模型，如 `gemma4:latest`）
-- Ollama Python SDK
+### 环境要求
+- Python 3.8+
+- Ollama 服务
+- 至少 8GB 内存（推荐 16GB）
 
-## 🚀 安装步骤
+### 安装步骤
 
-1. **克隆仓库**
-   ```bash
-   git clone https://github.com/rabbitdeng/a-very-simple-coding-agent.git
-   cd a-very-simple-coding-agent
-   ```
+1. **安装 Ollama**
+```bash
+# macOS
+brew install ollama
 
-2. **安装依赖**
-   ```bash
-   pip install ollama
-   ```
+# Linux
+curl -fsSL https://ollama.com/install.sh | sh
 
-3. **确保Ollama运行**
-   ```bash
-   # 如果Ollama服务未运行，启动它
-   ollama serve
-   ```
-
-4. **拉取支持工具调用的模型**
-   ```bash
-   ollama pull gemma4:latest
-   ```
-
-## 🎯 使用方法
-
-1. **运行agent**
-   ```bash
-   python agent.py
-   ```
-
-2. **选择角色**
-   ```
-   ==================================================
-   欢迎使用代码助手！
-   ==================================================
-   是否使用永雏塔菲角色扮演？(y/n): y
-
-   已切换到永雏塔菲模式！喵~
-   ```
-
-3. **与VTuber助手互动**
-   ```
-   user: 帮我创建一个hello.py文件
-   assistant: 好的，雏草姬！我来帮你创建hello.py文件喵~ 让我使用write_file工具来完成这个任务~
-   [执行工具: write_file {"file_path": "hello.py", "content": "print('Hello, world!')"}]
-   [工具输出]: 
-   assistant: 文件创建成功啦！现在我们有了一个简单的hello.py文件喵~ 你还需要我做什么吗？
-   ```
-
-## 🔒 安全特性
-
-- **路径沙箱**：所有文件操作限制在工作目录内
-- **命令隔离**：`bash` 命令在工作目录上下文中运行
-- **安全路径处理**：防止目录遍历攻击
-
-## 📁 项目结构
-
-```
-a-very-simple-coding-agent/
-├── agent.py               # 主agent代码
-├── taffy_system_prompt.txt  # 永雏塔菲角色设定
-├── taffy_corpus.csv       # 永雏塔菲语料库
-├── hello.py               # 示例文件
-├── kalman_filter.py       # 示例卡尔曼滤波器实现
-└── .gitignore             # Git忽略文件
+# Windows
+# 访问 https://ollama.ai/ 下载安装
 ```
 
-## 🤖 Agent工作流程
-
-1. **角色选择**：用户选择是否使用VTuber角色扮演
-2. **用户输入**：提供任务或问题
-3. **工具选择**：Agent根据角色性格决定使用哪些工具
-4. **执行**：工具执行并显示输出
-5. **结果分析**：Agent以角色语气处理工具结果
-6. **最终响应**：Agent以角色身份提供工作总结
-
-## 🌐 模型兼容性
-
-此agent最适合支持工具调用的模型，如：
-- `gemma4:latest`
-- `qwen3.5:9b`
-- `llama3.1`
-- `qwen2.5`
-
-## 📝 角色扮演示例
-
-### 示例1：创建并运行脚本
-```
-user: 创建一个Python脚本，打印斐波那契数列到100
-assistant: 好的，雏草姬！我来帮你创建一个斐波那契数列的脚本喵~ 让我使用write_file工具来完成这个任务~
-[执行工具: write_file {"file_path": "fibonacci.py", "content": "def fibonacci(n):\n    a, b = 0, 1\n    result = []\n    while a < n:\n        result.append(a)\n        a, b = b, a + b\n    return result\n\nprint(fibonacci(100))"}]
-[工具输出]: 
-assistant: 现在让我们运行这个脚本来看看输出喵~ 我使用bash工具来执行它~
-[执行工具: bash {"command": "python fibonacci.py"}]
-[工具输出]: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
-assistant: 斐波那契脚本已经成功创建并执行啦！输出了0到89的斐波那契数列喵~ 你还需要我做什么吗？
+2. **拉取模型**
+```bash
+ollama pull qwen3.5:9b
 ```
 
-### 示例2：读取并修改文件
-```
-user: 读取hello.py的内容并添加注释
-assistant: 好的，雏草姬！我先读取hello.py的当前内容喵~
-[执行工具: read_file {"file_path": "hello.py"}]
-[工具输出]: print('Hello, world!')
-assistant: 现在我来给这个文件添加注释喵~
-[执行工具: write_file {"file_path": "hello.py", "content": "# Hello world example\nprint('Hello, world!')"}]
-[工具输出]: 
-assistant: 我已经给hello.py添加了注释啦！现在文件看起来更清晰了喵~ 你还需要我帮你做什么吗？
+3. **安装 Python 依赖**
+```bash
+pip install requests beautifulsoup4
 ```
 
-## 🎨 角色设定
+4. **运行 Agent**
+```bash
+python agent.py
+```
 
-永雏塔菲的完整角色设定包含：
-- 个人信息（年龄、身高、体重等）
-- 形象特点（粉发、呆毛、M形刘海等）
-- 性格和行为准则（活泼可爱、乐观开朗等）
-- 发明（时光机等）
-- 活动平台（B站、YouTube等）
-- 经典梗和口头禅
+## 📖 使用说明
 
-这些设定都存储在 `taffy_system_prompt.txt` 文件中，可以根据需要修改。
+### 基本命令
+- 输入问题或任务描述直接交互
+- 输入 `exit`、`quit` 或 `q` 退出程序
+- 按 `Ctrl+C` 或 `Ctrl+D` 也可以退出
 
-## 🤝 贡献
+### 可用工具
 
-欢迎fork仓库并提交pull requests。我们非常欢迎你的贡献！
+| 工具 | 功能 | 参数 |
+|------|------|------|
+| `todo_add` | 添加新任务 | text: 任务描述 |
+| `todo_change_status` | 更改任务状态 | item_id: 任务ID, status: pending/in_progress/done |
+| `todo_delete` | 删除任务 | item_id: 任务ID |
+| `todo_list` | 查看任务列表 | 无参数 |
+| `search_github_repos` | 搜索 GitHub 项目 | keyword: 关键词, language: 编程语言(可选) |
+| `get_github_repo_info` | 获取仓库详情 | repo_url: 仓库URL |
+| `bash` | 执行 Shell 命令 | command: 命令字符串 |
+| `read_file` | 读取文件 | file_path: 文件路径 |
+| `write_file` | 写入文件 | file_path: 文件路径, content: 内容 |
+| `fetch_page` | 获取网页内容 | url: 网页URL |
+
+### 常用示例
+
+**搜索 GitHub AI 项目**
+```
+user: 帮我搜索一下 GitHub 上热门的 Python AI 项目
+```
+
+**查看当前目录**
+```
+user: 列出当前目录的文件
+```
+
+**读取文件**
+```
+user: 读取 agent.py 文件的内容
+```
+
+**添加待办**
+```
+user: 添加任务：优化代码的错误处理
+```
+
+## 🔧 配置说明
+
+### 环境变量
+- `OLLAMA_HOST` - Ollama 服务地址（默认: http://localhost:11434）
+
+### 可配置参数
+在 `agent.py` 中可以调整以下参数：
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `DEFAULT_MODEL` | qwen3.5:9b | 使用的模型名称 |
+| `MAX_ITERATIONS` | 20 | 最大思考迭代次数 |
+| `MAX_HISTORY` | 16 | 保留对话历史数量 |
+| `TOKEN_THRESHOLD` | 8000 | 触发自动压缩的 token 阈值 |
+| `KEEP_RECENT_TOOLS` | 3 | 保留完整结果的工具调用数量 |
+
+## 📊 项目结构
+
+```
+codeagent/
+├── agent.py              # 主程序文件
+├── README.md            # 中文文档
+├── README_EN.md         # 英文文档
+├── requirements.txt     # Python 依赖
+└── transcripts/         # 对话历史目录（自动创建）
+    └── transcript_*.jsonl
+```
+
+## 🛡️ 安全特性
+
+1. **路径安全** - 所有文件操作经过安全检查，防止目录遍历
+2. **命令超时** - Shell 命令 5 分钟超时保护
+3. **网络超时** - API 调用超时保护
+4. **内容截断** - 大文件和网页内容自动截断
+
+## 🤝 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+1. Fork 本项目
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开 Pull Request
+
+## 📝 开发计划
+
+- [ ] 支持多模型切换
+- [ ] 添加文件差异对比
+- [ ] 支持流式输出
+- [ ] 添加更多工具（数据库、Git 操作等）
+- [ ] 支持多会话管理
+- [ ] 对话历史搜索和导出
 
 ## 📄 许可证
 
-本项目是开源的，基于 [MIT License](LICENSE) 发布。
+本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件。
 
----
+## 📞 联系方式
 
-**与你的VTuber编程助手一起愉快编码！** 🎉
+- 项目主页: [GitHub](https://github.com/yourusername/codeagent)
+- 问题反馈: [Issues](https://github.com/yourusername/codeagent/issues)
+
+## ⚠️ 注意事项
+
+- 这是一个本地运行的工具，请谨慎执行 Shell 命令
+- 所有文件操作仅限于当前工作目录及其子目录
+- 建议在 Git 仓库中使用，以便可以回滚文件更改
+- 大文件读取可能会消耗较多 token，请谨慎使用
