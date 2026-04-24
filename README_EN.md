@@ -9,6 +9,32 @@ Give it a goal, and it will build the world for you in a secure local sandbox.
 
 &lt;br /&gt;
 
+## 🗺️ Roadmap
+
+```mermaid
+timeline
+    title Ollama Task Engine Evolution Roadmap
+    section v0.1 Prototype (Current State)
+        Physical Sandbox : Path security validation & file read/write
+        Execution Engine : Shell command execution with timeout protection
+        Information Antenna : Web text purification & GitHub API integration
+        State Management : 3-state Todo system with Token dynamic compression
+    section v0.2 Experience Upgrade (In Progress)
+        Visual Feedback : Terminal color highlighting & LLM streaming output
+        Web Console : Basic visual dashboard interaction
+        Long-term Memory : Conversation state persistence & seamless loading
+    section v0.3 Architecture Evolution (Planned)
+        Task Distribution : Sub-Agent basic architecture implementation
+        Version Control : Deep Git integration & code rollback
+        Expert Node : Code Review dedicated Agent
+    section v1.0 Ultimate Form (🎯)
+        Swarm Collaboration : Multi-Agent concurrent task processing & result aggregation
+        Deep Perception : AST(Abstract Syntax Tree) level code structure understanding
+        Official Coronation : Core architecture stable, project official release
+```
+
+&lt;br /&gt;
+
 ## 💡 Design Philosophy
 
 - **Local First**: Your code is your core asset. All reasoning and file operations are completed locally, cutting off dependence on external commercial APIs.
